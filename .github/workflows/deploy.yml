@@ -20,4 +20,21 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "Connected to EC2 successfully"
+            cd /home/ubuntu/cloud-app
+
+            if [ ! -d .git ]; then
+              git init
+              git remote add origin https://github.com/Jay-Tolentino/automated-cloud-application-deployment-platform.git
+            fi
+
+            git fetch origin main
+            git reset --hard origin/main
+
+            python3 -m venv venv
+            ./venv/bin/pip install --upgrade pip
+            ./venv/bin/pip install -r requirements.txt
+
+            sudo systemctl restart cloudapp
+            sudo systemctl reload nginx
+
+            echo "Deployment completed successfully"
