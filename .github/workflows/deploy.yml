@@ -6,13 +6,26 @@ on:
       - main
 
 jobs:
-  deploy:
+ name: Deploy to EC2
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
-
-      - name: Deployment Placeholder
-        run: echo "Deploying to EC2"
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Connected to EC2 successfully"
