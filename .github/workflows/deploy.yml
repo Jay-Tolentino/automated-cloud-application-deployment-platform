@@ -1,12 +1,4 @@
-name: Deploy
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
- name: Deploy to EC2
+name: Deploy to EC2
 
 on:
   push:
